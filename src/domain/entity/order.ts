@@ -43,6 +43,11 @@ export default class Order {
     return true;
   }
 
+  changeCustomerId(customerId: string) {
+    this._customerId = customerId;
+    this.validate();
+  }
+
   total(): number {
     return this._items.reduce((acc, item) => acc + item.total(), 0);
   }
