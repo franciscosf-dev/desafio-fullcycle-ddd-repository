@@ -48,6 +48,18 @@ export default class Order {
     this.validate();
   }
 
+  addItem(item: OrderItem) {
+    this._items.push(item);
+    this._total = this.total();
+    this.validate();
+  }
+
+  changeItens(itens: OrderItem[]) {
+    this._items = itens;
+    this._total = this.total();
+    this.validate();
+  }
+
   total(): number {
     return this._items.reduce((acc, item) => acc + item.total(), 0);
   }

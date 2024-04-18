@@ -50,4 +50,32 @@ describe("Order unit tests", () => {
     // Assert
     expect(order.customerId).toBe("C2");
   });
+
+  it("should additem", () => {
+    const orderItem = new OrderItem("1","Product 1",15,"P1",2);
+    const order = new Order("O1", "C1", [orderItem]);
+    const orderItem2 = new OrderItem("2","Product 2",25,"P2",3);
+    order.addItem(orderItem2);
+
+    // Assert
+    expect(order.items).toEqual([orderItem,orderItem2]);
+    let total = order.total();
+    expect(total).toBe(105);
+  });
+
+  it("should change itens", () => {
+    const orderItem = new OrderItem("1","Product 1",15,"P1",2);
+    const order = new Order("O1", "C1", [orderItem]);
+    const orderItem2 = new OrderItem("2","Product 2",25,"P2",3);
+
+    const orderItem3 = new OrderItem("3","Product 3",20,"P3",1);
+    const orderItem4 = new OrderItem("4","Product 4",30,"P4",4);
+    
+    order.changeItens([orderItem3,orderItem4]);
+
+    // Assert
+    expect(order.items).toEqual([orderItem3,orderItem4]);
+    let total = order.total();
+    expect(total).toBe(140);
+  });
 });

@@ -136,6 +136,105 @@ describe("Order repository test", () => {
       ],
     });
 
+    const product2 = new Product("P2", "Product 2", 20);
+    await productRepository.create(product2);
+
+    const orderItem2 = new OrderItem(
+      "OI2",
+      product2.name,
+      product2.price,
+      product2.id,
+      2
+    );
+
+    order.addItem(orderItem2);
+    
+    await orderRepository.update(order);
+
+    const orderModel2 = await OrderModel.findOne({
+      where: { id: order.id },
+      include: ["items"],
+    });
+
+    expect(orderModel2.toJSON()).toStrictEqual({
+      id: "O1",
+      customer_id: "C2",
+      total: order.total(),
+      items: [
+        {
+          id: orderItem.id,
+          name: orderItem.name,
+          price: orderItem.price,
+          quantity: orderItem.quantity,
+          order_id: "O1",
+          product_id: orderItem.productId,
+        },
+        {
+          id: orderItem2.id,
+          name: orderItem2.name,
+          price: orderItem2.price,
+          quantity: orderItem2.quantity,
+          order_id: "O1",
+          product_id:orderItem2.productId,
+        },
+      ],
+    });
+
+    const product3 = new Product("P3", "Product 3", 15);
+    await productRepository.create(product3);
+
+    const orderItem3 = new OrderItem(
+      "OI3",
+      product3.name,
+      product3.price,
+      product3.id,
+      3
+    );
+
+    const product4 = new Product("P4", "Product 4", 25);
+    await productRepository.create(product4);
+
+    const orderItem4 = new OrderItem(
+      "OI4",
+      product4.name,
+      product4.price,
+      product4.id,
+      3
+    );
+
+    order.changeItens([orderItem3,orderItem4]);
+    
+    await orderRepository.update(order);
+
+    const orderModel3 = await OrderModel.findOne({
+      where: { id: order.id },
+      include: ["items"],
+    });
+
+    expect(orderModel3.toJSON()).toStrictEqual({
+      id: "O1",
+      customer_id: "C2",
+      total: order.total(),
+      items: [
+        {
+          id: orderItem3.id,
+          name: orderItem3.name,
+          price: orderItem3.price,
+          quantity: orderItem3.quantity,
+          order_id: "O1",
+          product_id: orderItem3.productId,
+        },
+        {
+          id: orderItem4.id,
+          name: orderItem4.name,
+          price: orderItem4.price,
+          quantity: orderItem4.quantity,
+          order_id: "O1",
+          product_id:orderItem4.productId,
+        },
+      ],
+    });    
+
   });
 
   it("should find a order", async () => {
